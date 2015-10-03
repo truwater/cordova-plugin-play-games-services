@@ -1,4 +1,4 @@
-package com.a42.cordova.plugins;
+package com.berriart.cordova.plugins;
 /*
  * Copyright (C) 2013 Google Inc.
  *

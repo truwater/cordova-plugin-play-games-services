@@ -1,17 +1,7 @@
 cordova-google-play-game
 ========================
 
-Cordova Plugin For Google Play Game Service
-
-### Live demo
-
-See this plugin working in a live app: 
-
-[![WOW PUZZLES iOS](https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg)](https://itunes.apple.com/vn/app/wow-puzzles/id916475017?mt=8)
-
-[![WOW PUZZLES Android](https://developer.android.com/images/brand/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.a42.xephinhtuoitho)
-
-How it works: http://trinhtrunganh.com/cordova-plugin-for-google-play-game-service/
+Cordova Plugin For Google Play Game Service (Forked from ptgamr/cordova-google-play-game)
 
 ### Before you start
 
@@ -20,7 +10,7 @@ Understand about **Leaderboard** and **Achievement**. Setting up your game in Go
 ## Install
 
 ```
-cordova plugin add https://github.com/ptgamr/cordova-google-play-game.git --variable APP_ID=you_app_id_here
+cordova plugin add https://github.com/artberri/cordova-google-play-game.git --variable APP_ID=you_app_id_here
 ```
 
 ## Usage
@@ -50,7 +40,7 @@ googleplaygame.isSignedIn(function (result) {
 	// {
 	// 		“isSignedIn” : true
 	// }
-	
+
 	console.log(“Do something with result.isSignedIn”);
 });
 ```
@@ -117,7 +107,7 @@ googleplaygame.unlockAchievement(data);
 Increments the specified incremental achievement by the provided numSteps:
 
 ```
-var data = {	
+var data = {
 	achievementId: "achievementId1",
 	numSteps: 1
 };

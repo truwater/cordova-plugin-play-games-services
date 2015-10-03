@@ -1,4 +1,4 @@
-package com.a42.cordova.plugins;
+package com.berriart.cordova.plugins;
 
 
 import java.security.MessageDigest;
