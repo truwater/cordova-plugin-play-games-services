@@ -1,5 +1,5 @@
 var exec = require('cordova/exec');
-var PLAY_GAMES_SERVICES = 'PlayGamesService';
+var PLAY_GAMES_SERVICES = 'PlayGamesServices';
 
 var PlayGamesServices = function () {
     this.name = PLAY_GAMES_SERVICES;

@@ -29,8 +29,8 @@
         <preference name="APP_ID" />
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="PlayGamesService">
-                <param name="android-package" value="com.berriart.cordova.plugins.PlayGamesService"/>
+            <feature name="PlayGamesServices">
+                <param name="android-package" value="com.berriart.cordova.plugins.PlayGamesServices"/>
             </feature>
         </config-file>
 
