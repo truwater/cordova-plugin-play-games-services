@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	id="com.berriart.cordova.playgamesservices"
-	version="1.0.0">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-play-games-services"
+    version="1.0.0">
 
     <name>PlayGamesServices</name>
-	<description>Google Play Games Services Cordova Plugin</description>
-	<author>Alberto Varela</author>
-	<license>MIT</license>
-	<keywords>google, play, game, cordova, android</keywords>
-    <repo>https://github.com/artberri/cordova-google-play-game.git</repo>
-    <issue>https://github.com/artberri/cordova-google-play-game/issues</issue>
+    <description>Google Play Games Services Cordova Plugin</description>
+    <author>Alberto Varela</author>
+    <license>MIT</license>
+    <keywords>google, play, game, cordova, android</keywords>
+    <repo>https://github.com/artberri/cordova-play-games-services.git</repo>
+    <issue>https://github.com/artberri/cordova-play-games-services/issues</issue>
 
-	<engines>
-	    <engine name="cordova" version=">=4.0.0" />
-	</engines>
+    <engines>
+        <engine name="cordova" version=">=4.0.0" />
+    </engines>
 
     <js-module src="www/play-games-services.js" name="PlayGamesServices">
-        <clobbers target="cordova.plugins.playGamesServices" />
+        <clobbers target="window.plugins.playGamesServices" />
     </js-module>
 
     <!-- android -->
@@ -36,10 +36,6 @@
 
         <config-file target="res/values/strings.xml" parent="/resources">
             <string name="app_id">$APP_ID</string>
-            <string name="sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
-            <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
-            <string name="license_failed">License check failed.</string>
-            <string name="unknown_error">Unknown error.</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
