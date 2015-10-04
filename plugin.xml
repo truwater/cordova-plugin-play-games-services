@@ -9,12 +9,12 @@
 	<description>Google Play Game Service Cordova Plugin</description>
 	<author>Anh Trinh</author>
 	<license>MIT</license>
-	<keywords>google, play, game, cordova</keywords>
+	<keywords>google, play, game, cordova, android</keywords>
     <repo>https://github.com/artberri/cordova-google-play-game.git</repo>
     <issue>https://github.com/artberri/cordova-google-play-game/issues</issue>
 
 	<engines>
-	    <engine name="cordova" version=">=3.0" />
+	    <engine name="cordova" version=">=4.0.0" />
 	</engines>
 
     <js-module src="www/google-play-game.js" name="GooglePlayGame">
@@ -23,7 +23,11 @@
 
     <!-- android -->
     <platform name="android">
+        <framework src="com.google.android.gms:play-services-appstate:+" />
+        <framework src="com.google.android.gms:play-services-common:+" />
+        <framework src="com.google.android.gms:play-services-drive:+" />
         <framework src="com.google.android.gms:play-services-games:+" />
+        <framework src="com.google.android.gms:play-services-plus:+" />
 
         <preference name="APP_ID" />
 
