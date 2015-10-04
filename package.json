@@ -16,6 +16,8 @@
     "url": "https://github.com/artberri/cordova-plugin-play-games-services/issues"
   },
   "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
     "cordova",
     "google",
     "play",
