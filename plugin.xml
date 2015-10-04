@@ -24,7 +24,6 @@
     <!-- android -->
     <platform name="android">
         <framework src="com.google.android.gms:play-services-appstate:+" />
-        <framework src="com.google.android.gms:play-services-common:+" />
         <framework src="com.google.android.gms:play-services-drive:+" />
         <framework src="com.google.android.gms:play-services-games:+" />
         <framework src="com.google.android.gms:play-services-plus:+" />
