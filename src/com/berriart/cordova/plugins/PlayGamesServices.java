@@ -38,9 +38,9 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 
-public class GooglePlayGame extends CordovaPlugin implements GameHelperListener {
+public class PlayGamesServices extends CordovaPlugin implements GameHelperListener {
 
-    private static final String LOGTAG = "berriart-CordovaGooglePlayGame";
+    private static final String LOGTAG = "berriart-CordovaPlayGamesServices";
 
     private static final String ACTION_AUTH = "auth";
     private static final String ACTION_SIGN_OUT = "signOut";
@@ -199,7 +199,7 @@ public class GooglePlayGame extends CordovaPlugin implements GameHelperListener 
     private void executeShowAllLeaderboards(final CallbackContext callbackContext) {
         Log.d(LOGTAG, "executeShowAllLeaderboards");
 
-        final GooglePlayGame plugin = this;
+        final PlayGamesServices plugin = this;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -220,7 +220,7 @@ public class GooglePlayGame extends CordovaPlugin implements GameHelperListener 
     private void executeShowLeaderboard(final JSONObject options, final CallbackContext callbackContext) {
         Log.d(LOGTAG, "executeShowLeaderboard");
 
-        final GooglePlayGame plugin = this;
+        final PlayGamesServices plugin = this;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -280,7 +280,7 @@ public class GooglePlayGame extends CordovaPlugin implements GameHelperListener 
     private void executeShowAchievements(final CallbackContext callbackContext) {
         Log.d(LOGTAG, "executeShowAchievements");
 
-        final GooglePlayGame plugin = this;
+        final PlayGamesServices plugin = this;
 
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override

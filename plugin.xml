@@ -2,12 +2,12 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	id="com.berriart.cordova.googleplaygame"
-	version="2.0.4">
+	id="com.berriart.cordova.playgamesservices"
+	version="1.0.0">
 
-    <name>GooglePlayGame</name>
-	<description>Google Play Game Service Cordova Plugin</description>
-	<author>Anh Trinh</author>
+    <name>PlayGamesServices</name>
+	<description>Google Play Games Services Cordova Plugin</description>
+	<author>Alberto Varela</author>
 	<license>MIT</license>
 	<keywords>google, play, game, cordova, android</keywords>
     <repo>https://github.com/artberri/cordova-google-play-game.git</repo>
@@ -17,24 +17,29 @@
 	    <engine name="cordova" version=">=4.0.0" />
 	</engines>
 
-    <js-module src="www/google-play-game.js" name="GooglePlayGame">
-        <clobbers target="googleplaygame" />
+    <js-module src="www/play-games-services.js" name="PlayGamesServices">
+        <clobbers target="cordova.plugins.playGamesServices" />
     </js-module>
 
     <!-- android -->
     <platform name="android">
-        <framework src="com.google.android.gms:play-services:+" />
+        <framework src="com.google.android.gms:play-services-games:+" />
+        <framework src="com.google.android.gms:play-services-plus:+" />
 
         <preference name="APP_ID" />
 
         <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="GooglePlayGame">
-                <param name="android-package" value="com.berriart.cordova.plugins.GooglePlayGame"/>
+            <feature name="PlayGamesService">
+                <param name="android-package" value="com.berriart.cordova.plugins.PlayGamesService"/>
             </feature>
         </config-file>
 
         <config-file target="res/values/strings.xml" parent="/resources">
             <string name="app_id">$APP_ID</string>
+            <string name="sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
+            <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
+            <string name="license_failed">License check failed.</string>
+            <string name="unknown_error">Unknown error.</string>
         </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
@@ -48,11 +53,10 @@
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
         </config-file>
 
-        <source-file src="src/com/berriart/cordova/plugins/GooglePlayGame.java" target-dir="src/com/berriart/cordova/plugins/" />
-        <source-file src="src/com/berriart/cordova/plugins/GoogleGameService.java" target-dir="src/com/berriart/cordova/plugins/" />
+        <source-file src="src/com/berriart/cordova/plugins/PlayGamesServices.java" target-dir="src/com/berriart/cordova/plugins/" />
+        <source-file src="src/com/berriart/cordova/plugins/BaseGameUtils.java" target-dir="src/com/berriart/cordova/plugins/" />
         <source-file src="src/com/berriart/cordova/plugins/BaseGameActivity.java" target-dir="src/com/berriart/cordova/plugins/" />
         <source-file src="src/com/berriart/cordova/plugins/GameHelper.java" target-dir="src/com/berriart/cordova/plugins/" />
         <source-file src="src/com/berriart/cordova/plugins/GameHelperUtils.java" target-dir="src/com/berriart/cordova/plugins/" />
-
      </platform>
 </plugin>

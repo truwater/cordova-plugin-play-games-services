@@ -21,21 +21,21 @@ cordova plugin add https://github.com/artberri/cordova-google-play-game.git --va
 You should do this as soon as your `deviceready` event has been fired. The plugin handles the various auth scenarios for you.
 
 ```
-googleplaygame.auth();
+cordova.plugins.playGamesServices.auth();
 ```
 
 #### Sign out
 You should provde the option for users to sign out
 
 ```
-googleplaygame.signout();
+cordova.plugins.playGamesServices.signout();
 ```
 
 #### Auth status
 To check if the user is already logged in (eg. to determine weather to show the Log In or Log Out button), use the following
 
 ```
-googleplaygame.isSignedIn(function (result) {
+cordova.plugins.playGamesServices.isSignedIn(function (result) {
 	// ‘result’ is a JSON object with a single boolean property of ‘isSignedIn’
 	// {
 	// 		“isSignedIn” : true
@@ -49,7 +49,7 @@ googleplaygame.isSignedIn(function (result) {
 Fetch the currently authenticated player's data.
 
 ```
-googleplaygame.showPlayer(function (playerData) {
+cordova.plugins.playGamesServices.showPlayer(function (playerData) {
 	...
 	console.log(“Authenticated as ”+playerData['displayName']);
 });
@@ -60,14 +60,14 @@ googleplaygame.showPlayer(function (playerData) {
 
 #### Submit Score
 
-Ensure you have had a successful callback from `googleplaygame.auth()` first before attempting to submit a score. You should also have set up your leaderboard(s) in Google Play Game Console and use the leaderboard identifier assigned there as the `leaderboardId`.
+Ensure you have had a successful callback from `cordova.plugins.playGamesServices.auth()` first before attempting to submit a score. You should also have set up your leaderboard(s) in Google Play Game Console and use the leaderboard identifier assigned there as the `leaderboardId`.
 
 ```
 var data = {
     score: 10,
     leaderboardId: "board1"
 };
-googleplaygame.submitScore(data);
+cordova.plugins.playGamesServices.submitScore(data);
 ```
 
 #### Show all leaderboards
@@ -75,7 +75,7 @@ googleplaygame.submitScore(data);
 Launches the native Play Games leaderboard view controller to show all the leaderboards.
 
 ```
-googleplaygame.showAllLeaderboards();
+cordova.plugins.playGamesServices.showAllLeaderboards();
 ```
 
 #### Show specific leaderboard
@@ -86,7 +86,7 @@ Launches directly into the specified leaderboard:
 var data = {
 	leaderboardId: "board1"
 };
-googleplaygame.showLeaderboard(leaderboardId);
+cordova.plugins.playGamesServices.showLeaderboard(leaderboardId);
 ```
 
 ### Achievements
@@ -99,7 +99,7 @@ var data = {
 	achievementId: "achievementId1"
 };
 
-googleplaygame.unlockAchievement(data);
+cordova.plugins.playGamesServices.unlockAchievement(data);
 ```
 
 #### Increment achievement
@@ -112,7 +112,7 @@ var data = {
 	numSteps: 1
 };
 
-googleplaygame.incrementAchievement(data);
+cordova.plugins.playGamesServices.incrementAchievement(data);
 ```
 
 #### Show achievements
@@ -120,7 +120,7 @@ googleplaygame.incrementAchievement(data);
 Launches the native Play Games achievements view controller to show the user’s achievements.
 
 ```
-googleplaygame.showAchievements();
+cordova.plugins.playGamesServices.showAchievements();
 ```
 
 ### Other
@@ -134,12 +134,12 @@ For example:
 ```
 var successfullyLoggedIn = function () { ... };
 var failedToLogin = function () { ... };
-googleplaygame.auth(successfullyLoggedIn, failedToLogin);
+cordova.plugins.playGamesServices.auth(successfullyLoggedIn, failedToLogin);
 
 var data = { ... };
 var successfullySubmittedScore  = function () { ... };
 var failedToSubmitScore  = function () { ... };
-googleplaygame.submitScore(data, successfullySubmittedScore, failedToSubmitScore);
+cordova.plugins.playGamesServices.submitScore(data, successfullySubmittedScore, failedToSubmitScore);
 ```
 
 ## Platform

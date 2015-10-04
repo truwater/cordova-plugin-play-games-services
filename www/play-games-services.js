@@ -1,8 +1,8 @@
-var exec = require("cordova/exec");
-var GOOGLE_PLAY_GAME = "GooglePlayGame";
+var exec = require('cordova/exec');
+var PLAY_GAMES_SERVICES = 'PlayGamesService';
 
-var GooglePlayGame = function () {
-    this.name = GOOGLE_PLAY_GAME;
+var PlayGamesServices = function () {
+    this.name = PLAY_GAMES_SERVICES;
 };
 
 var actions = ['auth', 'signOut', 'isSignedIn',
@@ -10,13 +10,13 @@ var actions = ['auth', 'signOut', 'isSignedIn',
                'unlockAchievement', 'incrementAchievement', 'showAchievements', 'showPlayer'];
 
 actions.forEach(function (action) {
-    GooglePlayGame.prototype[action] = function (data, success, failure) {
+    PlayGamesServices.prototype[action] = function (data, success, failure) {
         var defaultSuccessCallback = function () {
-                console.log(GOOGLE_PLAY_GAME + '.' + action + ': executed successfully');
+                console.log(PLAY_GAMES_SERVICES + '.' + action + ': executed successfully');
             };
 
         var defaultFailureCallback = function () {
-                console.warn(GOOGLE_PLAY_GAME + '.' + action + ': failed on execution');
+                console.warn(PLAY_GAMES_SERVICES + '.' + action + ': failed on execution');
             };
 
         if (typeof data === 'function') {
@@ -30,8 +30,8 @@ actions.forEach(function (action) {
             failure = failure || defaultFailureCallback;
         }
 
-        exec(success, failure, GOOGLE_PLAY_GAME, action, [data]);
+        exec(success, failure, PLAY_GAMES_SERVICES, action, [data]);
     }
 });
 
-module.exports = new GooglePlayGame();
+module.exports = new PlayGamesServices();
