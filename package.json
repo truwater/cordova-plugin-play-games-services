@@ -1,19 +1,19 @@
 {
-  "name": "cordova-play-games-services",
+  "name": "cordova-plugin-play-games-services",
   "version": "1.0.0",
-  "description": "Google Play Games Services Cordova Plugin",
+  "description": "Google Play Games Services Cordova Plugin for Android",
   "cordova": {
-    "id": "cordova-play-games-services",
+    "id": "cordova-plugin-play-games-services",
     "platforms": [
       "android"
     ]
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/artberri/cordova-play-games-services.git"
+    "url": "https://github.com/artberri/cordova-plugin-play-games-services.git"
   },
   "bugs": {
-    "url": "https://github.com/artberri/cordova-play-games-services/issues"
+    "url": "https://github.com/artberri/cordova-plugin-play-games-services/issues"
   },
   "keywords": [
     "cordova",
@@ -21,7 +21,10 @@
     "play",
     "games",
     "services",
-    "android"
+    "android",
+    "users",
+    "leaderboard",
+    "achievements"
   ],
   "author": {
     "name": "Alberto Varela",

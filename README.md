@@ -1,7 +1,9 @@
-cordova-play-games-services
-===========================
+cordova-plugin-play-games-services
+==================================
 
-Cordova Plugin For Google Play Game Service (Forked from ptgamr/cordova-google-play-game)
+Cordova Plugin For Google Play Games Services (Fork of [ptgamr/cordova-google-play-game](https://github.com/ptgamr/cordova-google-play-game))
+
+Modified to include the new Google Play Services with com.google.android.gms:play-services and avoid some compiling errors. (Available also through npm, new Plugin Registry Format)
 
 ### Before you start
 
@@ -10,7 +12,7 @@ Understand about **Leaderboard** and **Achievement**. Setting up your game in Go
 ## Install
 
 ```
-cordova plugin add https://github.com/artberri/cordova-play-games-services.git --variable APP_ID=you_app_id_here
+cordova plugin add https://github.com/artberri/cordova-plugin-play-games-services.git --variable APP_ID=you_app_id_here
 ```
 
 ## Usage
