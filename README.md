@@ -1,9 +1,9 @@
 cordova-plugin-play-games-services
 ==================================
 
-Cordova Plugin For Google Play Games Services (Fork of [ptgamr/cordova-google-play-game](https://github.com/ptgamr/cordova-google-play-game))
+Cordova Plugin For Google Play Games Services (Fork of [artberri/cordova-google-play-game](https://github.com/artberri/cordova-plugin-play-games-services))
 
-Modified to include the new Google Play Services with com.google.android.gms:play-services and avoid some compiling errors. (Available also through npm, new Plugin Registry Format)
+Modified to include the new Google Play Services (GoogleApiAvailability) and new methods for Leaderboards and Achievements.
 
 ### Before you start
 
@@ -78,6 +78,20 @@ var data = {
     leaderboardId: "board1"
 };
 window.plugins.playGamesServices.submitScore(data);
+```
+
+#### Sumit Score Now
+
+Ensure you have had a successful callback from `window.plugins.playGamesServices.auth()` first before attempting to submit a score. You should also have set up your leaderboard(s) in Google Play Game Console and use the leaderboard identifier assigned there as the `leaderboardId`.
+
+This method submit the score immediately.
+
+```
+var data = {
+    score: 10,
+    leaderboardId: "board1"
+};
+window.plugins.playGamesServices.submitScoreNow(data);
 ```
 
 #### Show all leaderboards
