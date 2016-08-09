@@ -6,8 +6,8 @@ var PlayGamesServices = function () {
 };
 
 var actions = ['auth', 'signOut', 'isSignedIn',
-               'submitScore', 'showAllLeaderboards', 'showLeaderboard',
-               'unlockAchievement', 'incrementAchievement', 'showAchievements', 'showPlayer'];
+               'submitScore', 'submitScoreNow', 'getPlayerScore', 'showAllLeaderboards', 'showLeaderboard',
+               'unlockAchievement', 'unlockAchievementNow', 'incrementAchievement', 'incrementAchievementNow', 'showAchievements', 'showPlayer'];
 
 actions.forEach(function (action) {
     PlayGamesServices.prototype[action] = function (data, success, failure) {
@@ -31,7 +31,7 @@ actions.forEach(function (action) {
         }
 
         exec(success, failure, PLAY_GAMES_SERVICES, action, [data]);
-    }
+    };
 });
 
 module.exports = new PlayGamesServices();

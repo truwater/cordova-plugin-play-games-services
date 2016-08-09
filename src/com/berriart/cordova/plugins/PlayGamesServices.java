@@ -34,9 +34,15 @@ import android.util.Log;
 
 import com.berriart.cordova.plugins.GameHelper.GameHelperListener;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Result;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.Player;
+import com.google.android.gms.games.leaderboard.*;
+import com.google.android.gms.games.achievement.*;
 
 public class PlayGamesServices extends CordovaPlugin implements GameHelperListener {
 
@@ -47,11 +53,15 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
     private static final String ACTION_IS_SIGNEDIN = "isSignedIn";
 
     private static final String ACTION_SUBMIT_SCORE = "submitScore";
+    private static final String ACTION_SUBMIT_SCORE_NOW = "submitScoreNow";
+    private static final String ACTION_GET_PLAYER_SCORE = "getPlayerScore";
     private static final String ACTION_SHOW_ALL_LEADERBOARDS = "showAllLeaderboards";
     private static final String ACTION_SHOW_LEADERBOARD = "showLeaderboard";
 
     private static final String ACTION_UNLOCK_ACHIEVEMENT = "unlockAchievement";
+    private static final String ACTION_UNLOCK_ACHIEVEMENT_NOW = "unlockAchievementNow";
     private static final String ACTION_INCREMENT_ACHIEVEMENT = "incrementAchievement";
+    private static final String ACTION_INCREMENT_ACHIEVEMENT_NOW = "incrementAchievementNow";
     private static final String ACTION_SHOW_ACHIEVEMENTS = "showAchievements";
     private static final String ACTION_SHOW_PLAYER = "showPlayer";
 
@@ -68,14 +78,14 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
         super.initialize(cordova, webView);
         Activity cordovaActivity = cordova.getActivity();
 
-        googlePlayServicesReturnCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(cordovaActivity);
+        googlePlayServicesReturnCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(cordovaActivity);
 
         if (googlePlayServicesReturnCode == ConnectionResult.SUCCESS) {
             gameHelper = new GameHelper(cordovaActivity, BaseGameActivity.CLIENT_GAMES);
             gameHelper.setup(this);
         } else {
             Log.w(LOGTAG, String.format("GooglePlayServices not available. Error: '" +
-                    GooglePlayServicesUtil.getErrorString(googlePlayServicesReturnCode) +
+                    GoogleApiAvailability.getInstance().getErrorString(googlePlayServicesReturnCode) +
                     "'. Error Code: " + googlePlayServicesReturnCode));
         }
 
@@ -86,20 +96,21 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
     public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
 
         JSONObject options = inputs.optJSONObject(0);
+
         if (gameHelper == null) {
             Log.w(LOGTAG, String.format("Tried calling: '" + action + "', but error with GooglePlayServices"));
             Log.w(LOGTAG, String.format("GooglePlayServices not available. Error: '" +
-                    GooglePlayServicesUtil.getErrorString(googlePlayServicesReturnCode) +
+                    GoogleApiAvailability.getInstance().getErrorString(googlePlayServicesReturnCode) +
                     "'. Error Code: " + googlePlayServicesReturnCode));
 
             JSONObject googlePlayError = new JSONObject();
             googlePlayError.put("errorCode", googlePlayServicesReturnCode);
-            googlePlayError.put("errorString", GooglePlayServicesUtil.getErrorString(googlePlayServicesReturnCode));
+            googlePlayError.put("errorString", GoogleApiAvailability.getInstance().getErrorString(googlePlayServicesReturnCode));
 
             JSONObject result = new JSONObject();
             result.put("googlePlayError", googlePlayError);
-
             callbackContext.error(result);
+
             return true;
         }
 
@@ -113,6 +124,10 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
             executeIsSignedIn(callbackContext);
         } else if (ACTION_SUBMIT_SCORE.equals(action)) {
             executeSubmitScore(options, callbackContext);
+        } else if (ACTION_SUBMIT_SCORE_NOW.equals(action)) {
+            executeSubmitScoreNow(options, callbackContext);
+        } else if (ACTION_GET_PLAYER_SCORE.equals(action)) {
+            executeGetPlayerScore(options, callbackContext);
         } else if (ACTION_SHOW_ALL_LEADERBOARDS.equals(action)) {
             executeShowAllLeaderboards(callbackContext);
         } else if (ACTION_SHOW_LEADERBOARD.equals(action)) {
@@ -121,8 +136,12 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
             executeShowAchievements(callbackContext);
         } else if (ACTION_UNLOCK_ACHIEVEMENT.equals(action)) {
             executeUnlockAchievement(options, callbackContext);
+        } else if (ACTION_UNLOCK_ACHIEVEMENT_NOW.equals(action)) {
+            executeUnlockAchievementNow(options, callbackContext);
         } else if (ACTION_INCREMENT_ACHIEVEMENT.equals(action)) {
             executeIncrementAchievement(options, callbackContext);
+        } else if (ACTION_INCREMENT_ACHIEVEMENT_NOW.equals(action)) {
+            executeIncrementAchievementNow(options, callbackContext);
         } else if (ACTION_SHOW_PLAYER.equals(action)) {
             executeShowPlayer(callbackContext);
         } else {
@@ -184,13 +203,105 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
                 try {
                     if (gameHelper.isSignedIn()) {
                         Games.Leaderboards.submitScore(gameHelper.getApiClient(), options.getString("leaderboardId"), options.getInt("score"));
-                        callbackContext.success();
+                        callbackContext.success("executeSubmitScore: score submited successfully");
                     } else {
                         callbackContext.error("executeSubmitScore: not yet signed in");
                     }
                 } catch (JSONException e) {
                     Log.w(LOGTAG, "executeSubmitScore: unexpected error", e);
                     callbackContext.error("executeSubmitScore: error while submitting score");
+                }
+            }
+        });
+    }
+
+    private void executeSubmitScoreNow(final JSONObject options, final CallbackContext callbackContext) throws JSONException {
+        Log.d(LOGTAG, "executeSubmitScoreNow");
+
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (gameHelper.isSignedIn()) {
+                        PendingResult<Leaderboards.SubmitScoreResult> result = Games.Leaderboards.submitScoreImmediate(gameHelper.getApiClient(), options.getString("leaderboardId"), options.getInt("score"));
+                        result.setResultCallback(new ResultCallback<Leaderboards.SubmitScoreResult>() {
+                            @Override
+                            public void onResult(Leaderboards.SubmitScoreResult submitScoreResult) {
+                                if (submitScoreResult.getStatus().isSuccess()) {
+                                    ScoreSubmissionData scoreSubmissionData = submitScoreResult.getScoreData();
+
+                                    if (scoreSubmissionData != null) {
+                                        try {
+                                            ScoreSubmissionData.Result scoreResult = scoreSubmissionData.getScoreResult(LeaderboardVariant.TIME_SPAN_ALL_TIME);
+                                            JSONObject result = new JSONObject();
+                                            result.put("leaderboardId", scoreSubmissionData.getLeaderboardId());
+                                            result.put("playerId", scoreSubmissionData.getPlayerId());
+                                            result.put("formattedScore", scoreResult.formattedScore);
+                                            result.put("newBest", scoreResult.newBest);
+                                            result.put("rawScore", scoreResult.rawScore);
+                                            result.put("scoreTag", scoreResult.scoreTag);
+                                            callbackContext.success(result);
+                                        } catch (JSONException e) {
+                                            Log.w(LOGTAG, "executeSubmitScoreNow: unexpected error", e);
+                                            callbackContext.error("executeSubmitScoreNow: error while submitting score");
+                                        }
+                                    } else {
+                                        callbackContext.error("executeSubmitScoreNow: can't submit the score");
+                                    }
+                                } else {
+                                    callbackContext.error("executeSubmitScoreNow error: " + submitScoreResult.getStatus().getStatusMessage());
+                                }
+                            }
+                        });
+                    } else {
+                        callbackContext.error("executeSubmitScoreNow: not yet signed in");
+                    }
+                } catch (JSONException e) {
+                    Log.w(LOGTAG, "executeSubmitScoreNow: unexpected error", e);
+                    callbackContext.error("executeSubmitScoreNow: error while submitting score");
+                }
+            }
+        });
+    }
+
+    private void executeGetPlayerScore(final JSONObject options, final CallbackContext callbackContext) throws JSONException {
+        Log.d(LOGTAG, "executeGetPlayerScore");
+
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (gameHelper.isSignedIn()) {
+                        PendingResult<Leaderboards.LoadPlayerScoreResult> result = Games.Leaderboards.loadCurrentPlayerLeaderboardScore(gameHelper.getApiClient(), options.getString("leaderboardId"), LeaderboardVariant.TIME_SPAN_ALL_TIME, LeaderboardVariant.COLLECTION_PUBLIC);
+                        result.setResultCallback(new ResultCallback<Leaderboards.LoadPlayerScoreResult>() {
+                            @Override
+                            public void onResult(Leaderboards.LoadPlayerScoreResult playerScoreResult) {
+                                if (playerScoreResult.getStatus().isSuccess()) {
+                                    LeaderboardScore score = playerScoreResult.getScore();
+                                    
+                                    if (score != null) {
+                                        try {
+                                            JSONObject result = new JSONObject();
+                                            result.put("playerScore", score.getRawScore());
+                                            callbackContext.success(result);
+                                        } catch (JSONException e) {
+                                            Log.w(LOGTAG, "executeGetPlayerScore: unexpected error", e);
+                                            callbackContext.error("executeGetPlayerScore: error while retrieving score");
+                                        }
+                                    } else {
+                                        callbackContext.error("There isn't have any score record for this player");
+                                    }
+                                } else {
+                                    callbackContext.error("executeGetPlayerScore error: " + playerScoreResult.getStatus().getStatusMessage());
+                                }
+                            }
+                        });
+                    } else {
+                        callbackContext.error("executeGetPlayerScore: not yet signed in");
+                    }
+                } catch (JSONException e) {
+                    Log.w(LOGTAG, "executeGetPlayerScore: unexpected error", e);
+                    callbackContext.error("executeGetPlayerScore: error while retrieving score");
                 }
             }
         });
@@ -260,6 +371,40 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
         });
     }
 
+    private void executeUnlockAchievementNow(final JSONObject options, final CallbackContext callbackContext) {
+        Log.d(LOGTAG, "executeUnlockAchievementNow");
+
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (gameHelper.isSignedIn()) {
+                    PendingResult<Achievements.UpdateAchievementResult> result = Games.Achievements.unlockImmediate(gameHelper.getApiClient(), options.optString("achievementId"));
+                    result.setResultCallback(new ResultCallback<Achievements.UpdateAchievementResult>() {
+                            @Override
+                            public void onResult(Achievements.UpdateAchievementResult achievementResult) {
+                                if (achievementResult.getStatus().isSuccess()) {
+                                    try {
+                                        JSONObject result = new JSONObject();
+                                        result.put("achievementId", achievementResult.getAchievementId());
+                                        callbackContext.success(result);
+                                    } catch (JSONException e) {
+                                        Log.w(LOGTAG, "executeUnlockAchievementNow: unexpected error", e);
+                                        callbackContext.error("executeUnlockAchievementNow: error while unlocking achievement");
+                                    }
+                                } else {
+                                    callbackContext.error("executeUnlockAchievementNow error: " + achievementResult.getStatus().getStatusMessage());
+                                }
+                            }
+                        });
+                } else {
+                    Log.w(LOGTAG, "executeUnlockAchievementNow: not yet signed in");
+                    callbackContext.error("executeUnlockAchievementNow: not yet signed in");
+                }
+            }
+        });
+    }
+
     private void executeIncrementAchievement(final JSONObject options, final CallbackContext callbackContext) {
         Log.d(LOGTAG, "executeIncrementAchievement");
 
@@ -268,6 +413,40 @@ public class PlayGamesServices extends CordovaPlugin implements GameHelperListen
             public void run() {
                 if (gameHelper.isSignedIn()) {
                     Games.Achievements.increment(gameHelper.getApiClient(), options.optString("achievementId"), options.optInt("numSteps"));
+                    callbackContext.success();
+                } else {
+                    Log.w(LOGTAG, "executeIncrementAchievement: not yet signed in");
+                    callbackContext.error("executeIncrementAchievement: not yet signed in");
+                }
+            }
+        });
+    }
+
+    private void executeIncrementAchievementNow(final JSONObject options, final CallbackContext callbackContext) {
+        Log.d(LOGTAG, "executeIncrementAchievementNow");
+
+        cordova.getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (gameHelper.isSignedIn()) {
+                    PendingResult<Achievements.UpdateAchievementResult> result = Games.Achievements.incrementImmediate(gameHelper.getApiClient(), options.optString("achievementId"), options.optInt("numSteps"));
+                    result.setResultCallback(new ResultCallback<Achievements.UpdateAchievementResult>() {
+                            @Override
+                            public void onResult(Achievements.UpdateAchievementResult achievementResult) {
+                                if (achievementResult.getStatus().isSuccess()) {
+                                    try {
+                                        JSONObject result = new JSONObject();
+                                        result.put("achievementId", achievementResult.getAchievementId());
+                                        callbackContext.success(result);
+                                    } catch (JSONException e) {
+                                        Log.w(LOGTAG, "executeIncrementAchievementNow: unexpected error", e);
+                                        callbackContext.error("executeIncrementAchievementNow: error while incrementing achievement");
+                                    }
+                                } else {
+                                    callbackContext.error("executeIncrementAchievementNow error: " + achievementResult.getStatus().getStatusMessage());
+                                }
+                            }
+                        });
                     callbackContext.success();
                 } else {
                     Log.w(LOGTAG, "executeIncrementAchievement: not yet signed in");
