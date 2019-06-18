@@ -2,7 +2,11 @@
 
 Cordova Plugin For Google Play Games Services (Fork of [artberri/cordova-google-play-game](https://github.com/artberri/cordova-plugin-play-games-services))
 
-Modified to include the new Google Play Services (GoogleApiAvailability) and new methods for Leaderboards and Achievements.
+Updated FragmentActivity with androidx for Android API Release June 17, 2019
+
+https://developers.google.com/android/guides/releases
+
+https://developer.android.com/jetpack/androidx/migrate
 
 **Before you start:**
 
