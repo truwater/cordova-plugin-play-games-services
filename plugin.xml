@@ -23,8 +23,8 @@
 
     <!-- android -->
     <platform name="android">
-        <framework src="com.google.android.gms:play-services-games:+" />
-        <framework src="com.google.android.gms:play-services-plus:+" />
+        <framework src="com.google.android.gms:play-services-games:17.0.0" />
+        <framework src="com.google.android.gms:play-services-plus:16.0.0" />
 
         <preference name="APP_ID" />
 

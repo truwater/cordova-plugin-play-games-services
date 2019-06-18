@@ -1,6 +1,6 @@
 # Cordova Plugin For Play Games Services
 
-Cordova Plugin For Google Play Games Services (Fork of [ptgamr/cordova-google-play-game](https://github.com/ptgamr/cordova-plugin-play-games-services))
+Cordova Plugin For Google Play Games Services (Fork of [artberri/cordova-google-play-game](https://github.com/artberri/cordova-plugin-play-games-services))
 
 Modified to include the new Google Play Services (GoogleApiAvailability) and new methods for Leaderboards and Achievements.
 
@@ -13,7 +13,7 @@ Understand about **Leaderboard** and **Achievement**. Setting up your game in Go
 Cordova >= 5.0.0
 
 ```bash
-cordova plugin add cordova-plugin-play-games-services --variable APP_ID=you_app_id_here
+cordova plugin add https://github.com/truwater/cordova-plugin-play-games-services.git --variable APP_ID=you_app_id_here
 ```
 
 Cordova < 5.0.0
