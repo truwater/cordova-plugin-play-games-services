@@ -30,7 +30,7 @@
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="PlayGamesServices">
-                <param name="android-package" value="com.berriart.cordova.plugins.PlayGamesServices"/>
+                <param name="android-package" value="com.truwater.cordova.plugins.PlayGamesServices"/>
             </feature>
         </config-file>
 
@@ -49,10 +49,10 @@
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
         </config-file>
 
-        <source-file src="src/com/berriart/cordova/plugins/PlayGamesServices.java" target-dir="src/com/berriart/cordova/plugins/" />
-        <source-file src="src/com/berriart/cordova/plugins/BaseGameUtils.java" target-dir="src/com/berriart/cordova/plugins/" />
-        <source-file src="src/com/berriart/cordova/plugins/BaseGameActivity.java" target-dir="src/com/berriart/cordova/plugins/" />
-        <source-file src="src/com/berriart/cordova/plugins/GameHelper.java" target-dir="src/com/berriart/cordova/plugins/" />
-        <source-file src="src/com/berriart/cordova/plugins/GameHelperUtils.java" target-dir="src/com/berriart/cordova/plugins/" />
+        <source-file src="src/com/truwater/cordova/plugins/PlayGamesServices.java" target-dir="src/com/truwater/cordova/plugins/" />
+        <source-file src="src/com/truwater/cordova/plugins/BaseGameUtils.java" target-dir="src/com/truwater/cordova/plugins/" />
+        <source-file src="src/com/truwater/cordova/plugins/BaseGameActivity.java" target-dir="src/com/truwater/cordova/plugins/" />
+        <source-file src="src/com/truwater/cordova/plugins/GameHelper.java" target-dir="src/com/truwater/cordova/plugins/" />
+        <source-file src="src/com/truwater/cordova/plugins/GameHelperUtils.java" target-dir="src/com/truwater/cordova/plugins/" />
      </platform>
 </plugin>
